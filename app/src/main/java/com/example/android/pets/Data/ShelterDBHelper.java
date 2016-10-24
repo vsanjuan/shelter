@@ -47,7 +47,7 @@ public class ShelterDBHelper implements SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        String SQL_COMMAND = SQL_ADD_COLUMN;
+        db.execSQL(SQL_ADD_COLUMN);
 
     }
 
