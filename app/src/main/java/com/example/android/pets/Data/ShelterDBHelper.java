@@ -38,8 +38,7 @@ public class ShelterDBHelper implements SQLiteOpenHelper {
     }
 
 
-
-    public void OnCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(SQL_CREATE_ENTRIES);
 
