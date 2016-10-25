@@ -6,9 +6,9 @@ import android.provider.BaseColumns;
  * Created by Salvador on 24/10/2016.
  */
 
-public class ShelterContract {
+public class PetsContract {
 
-    private ShelterContract () {
+    private PetsContract() {
 
     }
 

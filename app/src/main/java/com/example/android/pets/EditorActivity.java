@@ -27,7 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.android.pets.Data.ShelterContract.Pets;
+import com.example.android.pets.Data.PetsContract.Pets;
 
 /**
  * Allows user to create a new pet or edit an existing one.
