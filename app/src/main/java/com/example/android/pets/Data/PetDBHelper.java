@@ -27,7 +27,7 @@ public class PetDbHelper extends SQLiteOpenHelper {
                     Pets._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
                     Pets.COLUMN_PET_NAME + TEXT_TYPE + " NOT NULL" + COMMA_SEP +
                     Pets.COLUMN_PET_BREED + TEXT_TYPE + COMMA_SEP +
-                    Pets.COLUMN_PET_GENDER + "INTEGER NOT NULL DEFAULT "
+                    Pets.COLUMN_PET_GENDER + " INTEGER NOT NULL DEFAULT "
                                            + Pets.GENDER_UNKNOWN + COMMA_SEP +
                     Pets.COLUMN_PET_WEIGHT + " INTEGER" + " )";
 
