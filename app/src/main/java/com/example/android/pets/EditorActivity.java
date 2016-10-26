@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.android.pets.Data.PetDbHelper;
 import com.example.android.pets.Data.PetsContract.Pets;
 
 /**
@@ -52,6 +53,9 @@ public class EditorActivity extends AppCompatActivity {
      */
     private int mGender = 0;
 
+    /** Save the database connection */
+    PetDbHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,9 @@ public class EditorActivity extends AppCompatActivity {
         mGenderSpinner = (Spinner) findViewById(R.id.spinner_gender);
 
         setupSpinner();
+
+        mDbHelper = new PetDbHelper(getBaseContext());
+
     }
 
     /**
@@ -118,6 +125,7 @@ public class EditorActivity extends AppCompatActivity {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
+
             case R.id.action_save:
                 // Do nothing for now
                 return true;
@@ -133,4 +141,6 @@ public class EditorActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

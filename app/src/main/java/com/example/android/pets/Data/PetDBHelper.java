@@ -51,6 +51,7 @@ public class PetDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(SQL_ADD_COLUMN);
 
+
     }
 
 
