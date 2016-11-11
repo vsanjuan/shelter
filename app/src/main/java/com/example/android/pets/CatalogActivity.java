@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.example.android.pets.Data.PetDbHelper;
 import com.example.android.pets.Data.PetsContract;
+import com.example.android.pets.Data.PetsContract.Pets;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -60,6 +61,15 @@ public class CatalogActivity extends AppCompatActivity {
 
 
         // SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        displayDatabaseInfo();
 
     }
 
@@ -102,12 +112,87 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetsContract.Pets.TABLE_NAME, null);
+        //Cursor cursor = db.rawQuery("SELECT * FROM " + PetsContract.Pets.TABLE_NAME, null);
+
+        // Make a Query using the query method from the SQLiteDatabase Class
+
+        Cursor cursor = db.query(PetsContract.Pets.TABLE_NAME,
+                null,       // The table to query
+                null,       // The columns to return
+                null,       // The columns for the WHERE clause
+                null,       // The values for the WHERE clause
+                null,       // don't group the rows
+                null        // don't filter by row groups
+        );
+
+
+        TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            /*TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+            displayView.setText("Number of rows in pets database table: " + cursor.getCount());*/
+
+            /* Create a header in the Text View that looks like this:
+
+                The pets table contains <number of rows in Cursor> pets.
+
+                In the while loop below, iterate through the rows of the cursor and display
+                the information from each column
+
+             */
+
+            displayView.setText("The pets table contains " + cursor.getCount() + " pets.\n\n");
+            displayView.append(Pets._ID + " - " +
+                    Pets.COLUMN_PET_NAME + " - " +
+                    Pets.COLUMN_PET_BREED + " - " +
+                    Pets.COLUMN_PET_GENDER + " - " +
+                    Pets.COLUMN_PET_WEIGHT + " \n ");
+
+            // Figure out the index of each column
+            int idColumnIndex = cursor.getColumnIndex(Pets._ID);
+            int nameColumnIndex = cursor.getColumnIndex(Pets.COLUMN_PET_NAME);
+            int breedColumnIndex = cursor.getColumnIndex(Pets.COLUMN_PET_BREED);
+            int genderColumnIndex = cursor.getColumnIndex(Pets.COLUMN_PET_GENDER);
+            int weightColumnIndex = cursor.getColumnIndex(Pets.COLUMN_PET_WEIGHT);
+
+
+
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+
+                int CurrentId = cursor.getInt(idColumnIndex);
+                String CurrentName = cursor.getString(nameColumnIndex);
+                String CurrentBreed = cursor.getString(breedColumnIndex);
+                int CurrentGender = cursor.getInt(genderColumnIndex);
+                int CurrentWeight = cursor.getInt(weightColumnIndex);
+
+ /*
+
+                CharSequence gender;
+
+                switch (CurrentGender) {
+                    case Pets.GENDER_UNKNOWN :
+                        gender =  getText(R.string.gender_unknown);
+                    case Pets.GENDER_FEMALE:
+                        gender = getText(R.string.gender_female);
+                    case Pets.GENDER_MALE:
+                        gender = getText(R.string.gender_male);
+
+                }*/
+
+                displayView.append("\n" + CurrentId + "   " +
+                        CurrentName + "   " +
+                        CurrentBreed + "   " +
+                        CurrentGender + "   " +
+                        CurrentWeight
+
+                    );
+
+            }
+
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.

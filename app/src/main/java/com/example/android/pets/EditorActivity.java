@@ -15,10 +15,15 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +31,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.pets.Data.PetDbHelper;
+import com.example.android.pets.Data.PetsContract;
 import com.example.android.pets.Data.PetsContract.Pets;
 
 /**
@@ -127,7 +134,24 @@ public class EditorActivity extends AppCompatActivity {
             // Respond to a click on the "Save" menu option
 
             case R.id.action_save:
-                // Do nothing for now
+                long row_id = insertPet();
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_LONG;
+                CharSequence text;
+
+                if ( row_id > 0)
+                {
+                    text = "Pet saved with id: " + row_id;
+                } else {
+                    text = "Error with saving pet";
+                }
+
+                Toast toast = Toast.makeText(context,text,duration);
+                toast.show();
+
+                Intent intent = new Intent(this, CatalogActivity.class);
+                startActivity(intent);
+
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -142,11 +166,27 @@ public class EditorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private  void insertPet() {
+    private  long insertPet() {
 
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
+        int weightInteger = Integer.parseInt(mWeightEditText.getText().toString().trim());
 
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(PetsContract.Pets.COLUMN_PET_NAME, nameString );
+        values.put(PetsContract.Pets.COLUMN_PET_BREED, breedString );
+        values.put(PetsContract.Pets.COLUMN_PET_GENDER, mGender);
+        values.put(PetsContract.Pets.COLUMN_PET_WEIGHT, weightInteger);
+
+        Log.v("Gender", Integer.toString(mGender));
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(PetsContract.Pets.TABLE_NAME, null, values);
+        return newRowId;
 
     }
 
